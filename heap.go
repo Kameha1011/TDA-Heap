@@ -6,7 +6,7 @@ const (
 	_FACTORDISMINUCION  = 4
 )
 
-type funcionComp[T any] func(a, b T) int
+type funcionComp[T any] func(T, T) int
 
 type colaPrioridad[T any] struct {
 	datos    []T

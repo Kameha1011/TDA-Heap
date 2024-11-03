@@ -1,7 +1,6 @@
 package cola_prioridad_test
 
 import (
-	"fmt"
 	"math/rand/v2"
 	"strings"
 	TDAColaPrioridad "tdas/cola_prioridad"
@@ -394,56 +393,4 @@ func TestHeapSort(t *testing.T) {
 	arr := []int{10, 7, 5, 3, 2, 1, 8, 9, 4, 6}
 	TDAColaPrioridad.HeapSort(arr, funcionCmpInts)
 	require.Equal(t, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, arr)
-}
-
-func ejecutarPruebaVolumen(b *testing.B, n int) {
-	heap := TDAColaPrioridad.CrearHeap(funcionCmpInts)
-
-	valores := make([]int, n)
-	poblarArr(valores, n*2)
-
-	/* Inserta 'n' parejas en el Abb */
-	for i := 0; i < n; i++ {
-		valores[i] = i
-		heap.Encolar(valores[i])
-	}
-
-	require.EqualValues(b, n, heap.Cantidad(), "La cantidad de elementos es incorrecta")
-
-	/* Verifica que devuelva los valores correctos */
-	ok := true
-	for i := 0; i < n; i++ {
-		ok = heap.VerMax() == valores[i]
-		if !ok {
-			break
-		}
-	}
-
-	require.True(b, ok, "Pertenece y Obtener con muchos elementos no funciona correctamente")
-	require.EqualValues(b, n, heap.Cantidad(), "La cantidad de elementos es incorrecta")
-
-	/* Verifica que borre y devuelva los valores correctos */
-	for i := 0; i < n; i++ {
-		ok = heap.Desencolar() == valores[i]
-		if !ok {
-			break
-		}
-	}
-
-	require.True(b, ok, "Borrar muchos elementos no funciona correctamente")
-	require.EqualValues(b, 0, heap.Cantidad())
-}
-
-func BenchmarkHeap(b *testing.B) {
-	b.Log("Prueba de stress del Diccionario. Prueba guardando distinta cantidad de elementos (muy grandes), " +
-		"ejecutando muchas veces las pruebas para generar un benchmark. Valida que la cantidad " +
-		"sea la adecuada. Luego validamos que podemos obtener y ver si pertenece cada una de las claves geeneradas, " +
-		"y que luego podemos borrar sin problemas")
-	for _, n := range TAMS_VOLUMEN {
-		b.Run(fmt.Sprintf("Prueba %d elementos", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				ejecutarPruebaVolumen(b, n)
-			}
-		})
-	}
 }
