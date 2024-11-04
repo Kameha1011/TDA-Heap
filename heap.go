@@ -24,46 +24,29 @@ func (heap *colaPrioridad[T]) panicEstaVacia() {
 	}
 }
 
-func upHeap[T any](posicion int, heap *colaPrioridad[T]) {
-	if posicion == 0 {
-		return
-	}
-	posicionPadre := (posicion - 1) / 2
-	padre := heap.datos[posicionPadre]
-	if heap.cmp(padre, heap.datos[posicion]) < 0 {
-		swap(posicionPadre, posicion, heap.datos)
-		upHeap(posicionPadre, heap)
+func upHeap[T any](indice int, heap *colaPrioridad[T]) {
+	indicePadre := (indice - 1) / 2
+	for indice >= 0 && heap.cmp(heap.datos[indicePadre], heap.datos[indice]) < 0 {
+		swap(indicePadre, indice, heap.datos)
+		indice = indicePadre
+		indicePadre = (indice - 1) / 2
 	}
 }
 
-func obtenerMasGrande[T any](posicionIzq, posicionDer int, arr []T, cmp funcionComp[T]) int {
-	if cmp(arr[posicionIzq], arr[posicionDer]) > 0 {
-		return posicionIzq
+func indiceHijoMayor[T any](indicePadre int, arr []T, cmp func(a, b T) int, cantidad int) int {
+	hijoIzq, hijoDer := (2*indicePadre)+1, (2*indicePadre)+2
+	if hijoDer < cantidad && cmp(arr[hijoIzq], arr[hijoDer]) < 0 {
+		return hijoDer
 	}
-	return posicionDer
+	return hijoIzq
 }
 
-func downHeap[T any](posicion int, cmp funcionComp[T], arr []T, cantidad int) {
-	if posicion >= cantidad-1 {
-		return
-	}
-
-	poscIzq := posicion*2 + 1
-	poscDer := posicion*2 + 2
-
-	if poscIzq > cantidad-1 {
-		return
-	}
-
-	mayor := poscIzq
-
-	if poscDer <= cantidad-1 {
-		mayor = obtenerMasGrande(poscIzq, poscDer, arr, cmp)
-	}
-
-	if cmp(arr[posicion], arr[mayor]) < 0 {
-		swap(posicion, mayor, arr)
-		downHeap(mayor, cmp, arr, cantidad)
+func downHeap[T any](indice int, cmp funcionComp[T], arr []T, cantidad int) {
+	hijoMayor := indiceHijoMayor(indice, arr, cmp, cantidad)
+	for hijoMayor < cantidad && cmp(arr[indice], arr[hijoMayor]) < 0 {
+		swap(indice, hijoMayor, arr)
+		indice = hijoMayor
+		hijoMayor = indiceHijoMayor(indice, arr, cmp, cantidad)
 	}
 }
 
