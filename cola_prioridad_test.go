@@ -163,12 +163,12 @@ func TestHeapStrings(t *testing.T) {
 
 func TestVolumen(t *testing.T) {
 	heap := TDAColaPrioridad.CrearHeap[int](funcionCmpInts)
-	arr := make([]int, 10)
-	poblarArr(arr, 10)
+	arr := make([]int, _VOLUMEN_CHICO)
+	poblarArr(arr, _VOLUMEN_CHICO)
 	for i := 0; i < len(arr); i++ {
 		heap.Encolar(arr[i])
 	}
-	require.Equal(t, 10, heap.Cantidad())
+	require.Equal(t, _VOLUMEN_CHICO, heap.Cantidad())
 	ordenarArr(arr)
 	for i := len(arr) - 1; i >= 0; i-- {
 		require.Equal(t, arr[i], heap.Desencolar())
