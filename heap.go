@@ -24,7 +24,7 @@ func (heap *heap[T]) panicEstaVacia() {
 	}
 }
 
-func upHeap[T any](indice int, heap *colaPrioridad[T]) {
+func upHeap[T any](indice int, heap *heap[T]) {
 	indicePadre := (indice - 1) / 2
 	for indice >= 0 && heap.cmp(heap.datos[indicePadre], heap.datos[indice]) < 0 {
 		swap(indicePadre, indice, heap.datos)
