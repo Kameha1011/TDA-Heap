@@ -14,8 +14,6 @@ const (
 	_VOLUMEN_GRANDE = 100000
 )
 
-var TAMS_VOLUMEN = []int{12500, 25000, 50000, 100000, 200000, 400000}
-
 var funcionCmpInts = func(a, b int) int {
 	if a < b {
 		return -1
@@ -206,7 +204,7 @@ func TestVaciar(t *testing.T) {
 func TestHeapArr(t *testing.T) {
 	arr := make([]int, _VOLUMEN_CHICO)
 	poblarArr(arr, _VOLUMEN_CHICO)
-	heap := TDAColaPrioridad.CrearHeapArr[int](funcionCmpInts, arr)
+	heap := TDAColaPrioridad.CrearHeapArr[int](arr, funcionCmpInts)
 	require.Equal(t, _VOLUMEN_CHICO, heap.Cantidad())
 	ordenarArr(arr)
 	for i := len(arr) - 1; i >= 0; i-- {
@@ -216,7 +214,7 @@ func TestHeapArr(t *testing.T) {
 
 func TestHeapArrVacio(t *testing.T) {
 	arr := make([]int, 0)
-	heap := TDAColaPrioridad.CrearHeapArr[int](funcionCmpInts, arr)
+	heap := TDAColaPrioridad.CrearHeapArr[int](arr, funcionCmpInts)
 	require.True(t, heap.EstaVacia())
 	require.Equal(t, 0, heap.Cantidad())
 	require.PanicsWithValue(t, "La cola esta vacia", func() { heap.VerMax() })
@@ -230,7 +228,7 @@ func TestHeapArrVacio(t *testing.T) {
 func TestHeapArrEncolar(t *testing.T) {
 	arr := make([]int, _VOLUMEN_CHICO)
 	poblarArr(arr, _VOLUMEN_CHICO)
-	heap := TDAColaPrioridad.CrearHeapArr[int](funcionCmpInts, arr)
+	heap := TDAColaPrioridad.CrearHeapArr[int](arr, funcionCmpInts)
 	heap.Encolar(_VOLUMEN_CHICO * 2)
 	require.Equal(t, _VOLUMEN_CHICO+1, heap.Cantidad())
 	require.Equal(t, _VOLUMEN_CHICO*2, heap.VerMax())
@@ -319,7 +317,7 @@ func TestComportamientoStrings(t *testing.T) {
 
 func TestHeapArrComportamiento(t *testing.T) {
 	arr := []int{10, 20, 5, 15, 30, 25, 5, 90, 72, 1, 0, 100, 200, 300, 400, 500, 600, 700, 800, 900}
-	heap := TDAColaPrioridad.CrearHeapArr[int](funcionCmpInts, arr)
+	heap := TDAColaPrioridad.CrearHeapArr[int](arr, funcionCmpInts)
 	require.Equal(t, 20, heap.Cantidad())
 	require.Equal(t, 900, heap.VerMax())
 
@@ -350,7 +348,7 @@ func TestHeapArrComportamiento(t *testing.T) {
 
 func TestHeapArrComportamientoStrings(t *testing.T) {
 	arr := []string{"goku", "vegetta", "gohan", "trunks", "bulma", "krilin", "piccolo", "bills"}
-	heap := TDAColaPrioridad.CrearHeapArr[string](funcionCmpStrings, arr)
+	heap := TDAColaPrioridad.CrearHeapArr[string](arr, funcionCmpStrings)
 	require.Equal(t, 8, heap.Cantidad())
 	require.Equal(t, "vegetta", heap.VerMax())
 

@@ -8,7 +8,7 @@ const (
 
 type funcionComp[T any] func(T, T) int
 
-type colaPrioridad[T any] struct {
+type heap[T any] struct {
 	datos    []T
 	cantidad int
 	cmp      funcionComp[T]
@@ -18,7 +18,7 @@ func swap[T any](a, b int, arr []T) {
 	arr[a], arr[b] = arr[b], arr[a]
 }
 
-func (heap *colaPrioridad[T]) panicEstaVacia() {
+func (heap *heap[T]) panicEstaVacia() {
 	if heap.EstaVacia() {
 		panic("La cola esta vacia")
 	}
@@ -50,7 +50,7 @@ func downHeap[T any](indice int, cmp funcionComp[T], arr []T, cantidad int) {
 	}
 }
 
-func (heap *colaPrioridad[T]) redimension(cant int) {
+func (heap *heap[T]) redimension(cant int) {
 	arrNuevo := make([]T, cant)
 	copy(arrNuevo, heap.datos)
 	heap.datos = arrNuevo
@@ -62,8 +62,8 @@ func heapify[T any](arr []T, cmp funcionComp[T]) {
 	}
 }
 
-func crearHeap[T any](cmp funcionComp[T], tam int) *colaPrioridad[T] {
-	heap := new(colaPrioridad[T])
+func crearHeap[T any](cmp funcionComp[T], tam int) *heap[T] {
+	heap := new(heap[T])
 	heap.datos = make([]T, tam)
 	heap.cantidad = 0
 	heap.cmp = cmp
@@ -74,7 +74,7 @@ func CrearHeap[T any](cmp funcionComp[T]) ColaPrioridad[T] {
 	return crearHeap(cmp, _TAMINICIAL)
 }
 
-func CrearHeapArr[T any](cmp funcionComp[T], arr []T) ColaPrioridad[T] {
+func CrearHeapArr[T any](arr []T, cmp funcionComp[T]) ColaPrioridad[T] {
 	heap := crearHeap(cmp, max(len(arr), _TAMINICIAL))
 	heap.cantidad = len(arr)
 	copy(heap.datos, arr)
@@ -82,11 +82,11 @@ func CrearHeapArr[T any](cmp funcionComp[T], arr []T) ColaPrioridad[T] {
 	return heap
 }
 
-func (heap *colaPrioridad[T]) EstaVacia() bool {
+func (heap *heap[T]) EstaVacia() bool {
 	return heap.cantidad <= 0
 }
 
-func (heap *colaPrioridad[T]) Encolar(dato T) {
+func (heap *heap[T]) Encolar(dato T) {
 	if heap.cantidad == len(heap.datos) {
 		heap.redimension(len(heap.datos) * _FACTOR_REDIMENSION)
 	}
@@ -95,12 +95,12 @@ func (heap *colaPrioridad[T]) Encolar(dato T) {
 	heap.cantidad++
 }
 
-func (heap *colaPrioridad[T]) VerMax() T {
+func (heap *heap[T]) VerMax() T {
 	heap.panicEstaVacia()
 	return heap.datos[0]
 }
 
-func (heap *colaPrioridad[T]) Desencolar() T {
+func (heap *heap[T]) Desencolar() T {
 	heap.panicEstaVacia()
 	dato := heap.datos[0]
 	swap(0, heap.cantidad-1, heap.datos)
@@ -112,7 +112,7 @@ func (heap *colaPrioridad[T]) Desencolar() T {
 	return dato
 }
 
-func (heap *colaPrioridad[T]) Cantidad() int {
+func (heap *heap[T]) Cantidad() int {
 	return heap.cantidad
 }
 
