@@ -94,19 +94,6 @@ func ordenarArr(arr []int) {
 	}
 }
 
-func TestHeapArrInts(t *testing.T) {
-	heap := TDAColaPrioridad.CrearHeap[[]int](cmpArrInts)
-	heap.Encolar([]int{1, 2, 3})
-	heap.Encolar([]int{4, 5, 6})
-	heap.Encolar([]int{7, 8, 9})
-	require.Equal(t, 3, heap.Cantidad())
-	require.Equal(t, []int{7, 8, 9}, heap.VerMax())
-	require.Equal(t, []int{7, 8, 9}, heap.Desencolar())
-	require.Equal(t, 2, heap.Cantidad())
-	require.False(t, heap.EstaVacia())
-
-}
-
 func TestVacia(t *testing.T) {
 	heap := TDAColaPrioridad.CrearHeap[int](funcionCmpInts)
 	require.True(t, heap.EstaVacia())
@@ -210,6 +197,18 @@ func TestHeapArr(t *testing.T) {
 	for i := len(arr) - 1; i >= 0; i-- {
 		require.Equal(t, arr[i], heap.Desencolar())
 	}
+}
+
+func TestHeapArrInts(t *testing.T) {
+	heap := TDAColaPrioridad.CrearHeap[[]int](cmpArrInts)
+	heap.Encolar([]int{1, 2, 3})
+	heap.Encolar([]int{4, 5, 6})
+	heap.Encolar([]int{7, 8, 9})
+	require.Equal(t, 3, heap.Cantidad())
+	require.Equal(t, []int{7, 8, 9}, heap.VerMax())
+	require.Equal(t, []int{7, 8, 9}, heap.Desencolar())
+	require.Equal(t, 2, heap.Cantidad())
+	require.False(t, heap.EstaVacia())
 }
 
 func TestHeapArrVacio(t *testing.T) {
